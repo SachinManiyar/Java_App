@@ -14,8 +14,8 @@ repositories {
 }
 sonar {
   properties {
-    property "sonar.projectKey", "GithubActions"
-    property "sonar.projectName", "GithubActions"
+    property "sonar.projectKey", "Java_App"
+    property "sonar.projectName", "Java_App"
   }
 }
 dependencies {
