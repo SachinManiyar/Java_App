@@ -55,7 +55,7 @@ jobs:
           FOD_TENANT: ${{secrets.FOD_TENANT}}
           FOD_USER: ${{secrets.FOD_USER}}
           FOD_PASSWORD: ${{secrets.FOD_PAT}}
-          FOD_RELEASE: sourav.tiwari1993@gmail.com/Java_App:Java_App
+          FOD_RELEASE: sourav.tiwari1993@gmail.com/Java_App:Test
           ### Optional configuration when integrating with Fortify on Demand
           # EXTRA_PACKAGE_OPTS: -oss                       # Extra 'scancentral package' options, like '-oss'' if
                                                            # Debricked SCA scan is enabled on Fortify on Demand
