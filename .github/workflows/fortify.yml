@@ -51,7 +51,7 @@ jobs:
           sast-scan: true
         env:
           ### Required configuration when integrating with Fortify on Demand
-          FOD_URL: https://ams.fortify.com
+          FOD_URL: https://trial.fortify.com
           FOD_TENANT: ${{secrets.FOD_TENANT}}
           FOD_USER: ${{secrets.FOD_USER}}
           FOD_PASSWORD: ${{secrets.FOD_PAT}}
