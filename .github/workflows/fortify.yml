@@ -3,10 +3,10 @@ name: Fortify Scan
 on:
   push:
     branches:
-      - main  # Adjust to your default branch
+      - main
   pull_request:
     branches:
-      - main  # Adjust to your default branch
+      - main
 
 jobs:
   fortify:
@@ -32,20 +32,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew      
-
+        run: chmod +x ./gradlew   
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Download Fortify CLI
+      - name: Configure Fortify Gradle Plugin
         run: |
-          curl -LO https://your-fortify-server/fortify-cli/fortify-cli-linux-20.2.0.zip
-          unzip fortify-cli-linux-20.2.0.zip
-          sudo mv fortify-cli /usr/local/bin/fortify-cli
-
-      - name: Run Fortify Scan
-        run: |
-          fortify-cli translate -b build/ -f source.fpr -scan -project "Java_App" -version "1.0" -url ${{ secrets.FORTIFY_SERVER }} -token ${{ secrets.FOD_PAT}}
+          echo 'plugins { id "com.fortify.plugin" version "21.1.0" }' >> build.gradle
+          ./gradlew fortifyTranslate
+          ./gradlew fortifyScan
 
       - name: Upload Fortify Results
         if: success() || failure()
@@ -54,3 +49,11 @@ jobs:
           name: fortify-results
           path: |
             source.fpr
+      - name: Upload Fortify Results to FOD
+        run: |
+          curl -X POST "https://api.fortify.com/v1/projects/Java_App/scans" \
+               -H "Authorization: Bearer ${{ secrets.FOD_PAT }}" \
+               -H "Content-Type: multipart/form-data" \
+               -F "file=@source.fpr" \
+               -F "project=Java_App" \
+               -F "version=1.0"
